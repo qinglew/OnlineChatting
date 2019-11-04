@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">网上聊天</string>
+    <string name="delete">删除聊天记录</string>
+    <string name="backup">备份</string>
+    <string name="setting">设置</string>
+    <string name="quit">退出</string>
+    <string name="call">Call</string>
+    <string name="friends">Friends</string>
+    <string name="nav_location">Location</string>
+    <string name="nav_mail">Mail</string>
+    <string name="user_email">qinglew@outlook.com</string>
+    <string name="username">Carlos Leo</string>
+    <string name="user1">User1</string>
+    <string name="hello_world">Hello World</string>
+    <string name="send">发送</string>
+    <string name="username_text">用户名:</string>
+    <string name="password_text">密  码:</string>
+    <string name="register">注册</string>
+    <string name="login">登陆</string>
+    <string name="quit_login">退出登陆</string>
+</resources>
