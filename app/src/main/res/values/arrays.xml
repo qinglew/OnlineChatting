@@ -1,2 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <integer-array name="icon_images">
+        <item>@mipmap/icon1</item>
+        <item>@mipmap/icon2</item>
+        <item>@mipmap/icon3</item>
+        <item>@mipmap/icon4</item>
+        <item>@mipmap/icon5</item>
+        <item>@mipmap/icon6</item>
+        <item>@mipmap/icon7</item>
+        <item>@mipmap/icon8</item>
+        <item>@mipmap/icon9</item>
+        <item>@mipmap/icon10</item>
+        <item>@mipmap/icon11</item>
+        <item>@mipmap/icon12</item>
+        <item>@mipmap/icon13</item>
+        <item>@mipmap/icon14</item>
+        <item>@mipmap/icon15</item>
+        <item>@mipmap/icon16</item>
+        <item>@mipmap/icon17</item>
+        <item>@mipmap/icon18</item>
+        <item>@mipmap/icon19</item>
+        <item>@mipmap/icon20</item>
+        <item>@mipmap/icon21</item>
+        <item>@mipmap/icon22</item>
+        <item>@mipmap/icon23</item>
+        <item>@mipmap/icon24</item>
+        <item>@mipmap/icon25</item>
+        <item>@mipmap/icon26</item>
+        <item>@mipmap/icon27</item>
+        <item>@mipmap/icon28</item>
+        <item>@mipmap/icon28</item>
+        <item>@mipmap/icon30</item>
+        <item>@mipmap/icon31</item>
+        <item>@mipmap/icon32</item>
+        <item>@mipmap/icon33</item>
+        <item>@mipmap/icon34</item>
+        <item>@mipmap/icon35</item>
+        <item>@mipmap/icon36</item>
+    </integer-array>
+</resources>

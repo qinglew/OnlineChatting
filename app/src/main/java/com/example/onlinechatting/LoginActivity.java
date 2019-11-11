@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
+import com.example.onlinechatting.util.ClientTCPConnector;
+
+public class LoginActivity extends BaseActivity {
     private EditText username_et;
     private EditText password_et;
 
@@ -41,18 +43,39 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
         username = username_et.getText().toString();
         password = password_et.getText().toString();
-        if ("".equals(username)) {
-            Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if ("".equals(password)) {
-            Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if ("Cleo".equals(username) && "123456".equals(password)) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("username", username);
-            startActivity(intent);
-        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ClientTCPConnector clientTCPConnector = ClientTCPConnector.getInstance();
+                    clientTCPConnector.connect();
+                    clientTCPConnector.sendData("LOGIN|" + username);
+                    String info = clientTCPConnector.receiveData();
+                    if (info != null && info.contains("SUCCESS")) {
+                        int iconIndex = Integer.parseInt(info.split("\\|")[1]);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("username", username);
+                        intent.putExtra("icon_index", iconIndex);
+                        startActivity(intent);
+                    } else if ("ERROR".equals(info)) {
+                        clientTCPConnector.close();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "登陆失败，人数已满", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(LoginActivity.this, "未知错误!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 }
