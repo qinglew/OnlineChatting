@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.onlinechatting.adapter.MessageAdapter;
 import com.example.onlinechatting.entity.Message;
+import com.example.onlinechatting.util.ClientTCPConnector;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,7 +31,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
+    private ClientTCPConnector clientTCPConnector;
     private DrawerLayout drawerLayout;
     private RecyclerView recyclerView;
     private EditText messageEdit;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Message> messageList;
     private MessageAdapter messageAdapter;
     private String username;
+
+    private ServerMonitor serverMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(messageAdapter);
+
+        clientTCPConnector = ClientTCPConnector.getInstance();
+
+        /*
+         监控消息转发
+         */
+        serverMonitor = new ServerMonitor();
+        new Thread(serverMonitor).start();
     }
 
     /**
@@ -108,9 +120,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initMessageList() {
         messageList = new ArrayList<>();
-        Message msg = new Message(R.drawable.panda_bambus_l,"Client",
-                "Hello!", Message.TYPE_RECEIVED);
-        messageList.add(msg);
     }
 
     /**
@@ -149,6 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 exit(findViewById(R.id.fab));
                 break;
             case R.id.quit_login:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        clientTCPConnector.sendData("SIGNOUT");
+                    }
+                }).start();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 break;
@@ -168,7 +183,13 @@ public class MainActivity extends AppCompatActivity {
                 .setAction("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        finish();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                clientTCPConnector.sendData("SIGNOUT");
+                            }
+                        }).start();
+                        ActivityManager.finishAll();
                     }
                 }).show();
     }
@@ -201,14 +222,58 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void sendMessage(View view) {
-        String content = messageEdit.getText().toString();
-        if (!"".equals(content)) {
-            Message msg = new Message(R.drawable.nav_icon, username,
-                    content, Message.TYPE_SENT);
-            messageList.add(msg);
-            messageAdapter.notifyItemInserted(messageList.size() - 1);
-            recyclerView.scrollToPosition(messageList.size() - 1);
-            messageEdit.setText("");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String content = messageEdit.getText().toString();
+                clientTCPConnector.sendData("MESSAGE|" + content);
+            }
+        }).start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        serverMonitor.exit = true;
+        clientTCPConnector.close();
+    }
+
+
+
+    class ServerMonitor implements Runnable {
+        public volatile boolean exit = false;
+
+        @Override
+        public void run() {
+            while (!exit) {
+                String info = clientTCPConnector.receiveData();
+                if (info == null) {
+                    exit = true;
+                    break;
+                }
+                String[] parts = info.split("\\|");
+                if ("MESSAGE".equals(parts[0])) {
+                    Message message = new Message();
+                    if (username.equals(parts[1]))
+                        message.setType(Message.TYPE_SENT);
+                    else
+                        message.setType(Message.TYPE_RECEIVED);
+                    message.setImaged(R.drawable.panda_bambus_l);
+                    message.setUsername(parts[1]);
+                    message.setContent(parts[3]);
+                    messageList.add(message);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            messageAdapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(messageList.size() - 1);
+                            messageEdit.setText("");
+                        }
+                    });
+                }
+                if ("SIGNOUT".equals(parts[0]))
+                    exit = true;
+            }
         }
     }
 }
