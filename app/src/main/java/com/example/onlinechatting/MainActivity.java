@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity {
+    private static final String TAG = "MainActivity";
+
     private ClientTCPConnector clientTCPConnector;
     private DrawerLayout drawerLayout;
     private RecyclerView recyclerView;
@@ -40,6 +45,8 @@ public class MainActivity extends BaseActivity {
     private List<Message> messageList;
     private MessageAdapter messageAdapter;
     private String username;
+    private int iconIndex;
+    private TypedArray icons;
 
     private ServerMonitor serverMonitor;
 
@@ -50,9 +57,7 @@ public class MainActivity extends BaseActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-
-        TextView usernameTitle = findViewById(R.id.username_title);
-        usernameTitle.setText(username);
+        iconIndex = intent.getIntExtra("icon_index", 0);
 
         initMessageList();
         messageAdapter = new MessageAdapter(messageList);
@@ -66,7 +71,14 @@ public class MainActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recycler_view);
         NavigationView navigationView = findViewById(R.id.navigation_view);
         messageEdit = findViewById(R.id.messageEdit);
+        TextView usernameTitle = findViewById(R.id.username_title);
+        usernameTitle.setText(username);
         CircleImageView icon = findViewById(R.id.icon);
+//        CircleImageView icon_image = findViewById(R.id.icon_image);
+//        TextView mail = findViewById(R.id.mail);
+//        TextView usernameTV = findViewById(R.id.username);
+//        Log.d("MainActivity", icon + ", " + icon_image);
+//        Log.d("MainActivity", mail + ", " + usernameTV);
 
         /*
          toolbar和actionbar设置
@@ -92,6 +104,10 @@ public class MainActivity extends BaseActivity {
                 }
         );
 
+//        mail.setText(username);
+//        usernameTV.setText(username + "@outlook.com");
+        icon.setImageResource(icons.getResourceId(iconIndex, 0));
+//        icon_image.setImageResource(icons.getResourceId(iconIndex, 0));
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +136,7 @@ public class MainActivity extends BaseActivity {
      */
     private void initMessageList() {
         messageList = new ArrayList<>();
+        icons = getResources().obtainTypedArray(R.array.icon_images);
     }
 
     /**
@@ -254,12 +271,17 @@ public class MainActivity extends BaseActivity {
                 String[] parts = info.split("\\|");
                 if ("MESSAGE".equals(parts[0])) {
                     Message message = new Message();
-                    if (username.equals(parts[1]))
+                    if (username.equals(parts[1])) {
+                        message.setUsername(username);
                         message.setType(Message.TYPE_SENT);
-                    else
+                        message.setImaged(icons.getResourceId(iconIndex, 0));
+                    }
+                    else {
+                        message.setUsername(parts[1]);
                         message.setType(Message.TYPE_RECEIVED);
-                    message.setImaged(R.drawable.panda_bambus_l);
-                    message.setUsername(parts[1]);
+                        message.setImaged(icons.getResourceId(Integer.parseInt(parts[2]), 0));
+                    }
+                    Log.d(TAG, "run: " + icons.getResourceId(Integer.parseInt(parts[2]), 0));
                     message.setContent(parts[3]);
                     messageList.add(message);
                     runOnUiThread(new Runnable() {

@@ -52,11 +52,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.rightLayout.setVisibility(View.GONE);
             holder.leftMessage.setText(message.getContent());
             holder.leftNameTxt.setText(message.getUsername());
+            holder.leftImage.setImageResource(message.getImaged());
         } else if (message.getType() == Message.TYPE_SENT) {
             holder.leftLayout.setVisibility(View.GONE);
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.rightMessage.setText(message.getContent());
             holder.rightNameTxt.setText(message.getUsername());
+            holder.rightImage.setImageResource(message.getImaged());
         }
     }
 

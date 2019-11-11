@@ -50,11 +50,13 @@ public class LoginActivity extends BaseActivity {
                 try {
                     ClientTCPConnector clientTCPConnector = ClientTCPConnector.getInstance();
                     clientTCPConnector.connect();
-                    clientTCPConnector.sendData("LOGIN|" + username + "|" + R.drawable.nav_icon);
+                    clientTCPConnector.sendData("LOGIN|" + username);
                     String info = clientTCPConnector.receiveData();
-                    if ("SUCCESS".equals(info)) {
+                    if (info != null && info.contains("SUCCESS")) {
+                        int iconIndex = Integer.parseInt(info.split("\\|")[1]);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("username", username);
+                        intent.putExtra("icon_index", iconIndex);
                         startActivity(intent);
                     } else if ("ERROR".equals(info)) {
                         clientTCPConnector.close();
