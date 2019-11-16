@@ -18,4 +18,10 @@
     <string name="register">注册</string>
     <string name="login">登陆</string>
     <string name="quit_login">退出登陆</string>
+    <string name="config">配置</string>
+    <string name="ip">服务器IP:</string>
+    <string name="port">端口号:</string>
+    <string name="localhost">localhost</string>
+    <string name="default_port">8888</string>
+    <string name="sure">确定</string>
 </resources>

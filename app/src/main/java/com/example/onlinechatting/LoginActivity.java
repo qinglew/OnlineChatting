@@ -1,5 +1,6 @@
 package com.example.onlinechatting;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -33,11 +34,6 @@ public class LoginActivity extends BaseActivity {
         intent.setAction("cn.edu.ncu.cleo.WIFI_NETWORK");
         intent.setPackage("com.example.onlinechatting");
         sendBroadcast(intent);
-    }
-
-    public void register(View view) {
-        // TODO: 向后台服务器发送TCP/IP请求用以注册
-
     }
 
     public void login(View view) {

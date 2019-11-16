@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientTCPConnector {
-    private static ClientTCPConnector instance = new ClientTCPConnector("10.0.2.2", 8888);
+    private static ClientTCPConnector instance = new ClientTCPConnector("172.20.10.5", 8888);
 
     private Socket socket;
     private BufferedReader reader;
@@ -24,7 +24,7 @@ public class ClientTCPConnector {
 
     public static ClientTCPConnector getInstance() {
         if (instance == null)
-            instance = new ClientTCPConnector("10.0.2.2", 8888);
+            instance = new ClientTCPConnector("172.20.10.5", 8888);
         return instance;
     }
 
