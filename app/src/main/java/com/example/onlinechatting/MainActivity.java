@@ -2,7 +2,6 @@ package com.example.onlinechatting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,9 +44,14 @@ public class MainActivity extends BaseActivity {
 
     private List<Message> messageList;
     private MessageAdapter messageAdapter;
+    private String phone;
     private String username;
     private int iconIndex;
     private TypedArray icons;
+
+    private CircleImageView iconImage;
+    private TextView phoneNumberTV;
+    private TextView usernameTV;
 
     private ServerMonitor serverMonitor;
 
@@ -58,9 +63,24 @@ public class MainActivity extends BaseActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         iconIndex = intent.getIntExtra("icon_index", 0);
+        phone = intent.getStringExtra("phone");
 
         initMessageList();
         messageAdapter = new MessageAdapter(messageList);
+
+        /*
+         * 侧划栏标题部分UI初始化
+         */
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        View view = navigationView.getHeaderView(0);
+        RelativeLayout navHeader = view.findViewById(R.id.nav_header);
+        iconImage = navHeader.findViewById(R.id.icon_image);
+        phoneNumberTV = navHeader.findViewById(R.id.phone_number);
+        usernameTV = navHeader.findViewById(R.id.username);
+
+        Log.d(TAG, "" + iconImage);
+        Log.d(TAG, "" + phoneNumberTV);
+        Log.d(TAG, "" + usernameTV);
 
         /*
          UI组件初始化
@@ -69,16 +89,10 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.recycler_view);
-        NavigationView navigationView = findViewById(R.id.navigation_view);
         messageEdit = findViewById(R.id.messageEdit);
         TextView usernameTitle = findViewById(R.id.username_title);
         usernameTitle.setText(username);
         CircleImageView icon = findViewById(R.id.icon);
-//        CircleImageView icon_image = findViewById(R.id.icon_image);
-//        TextView mail = findViewById(R.id.mail);
-//        TextView usernameTV = findViewById(R.id.username);
-//        Log.d("MainActivity", icon + ", " + icon_image);
-//        Log.d("MainActivity", mail + ", " + usernameTV);
 
         /*
          toolbar和actionbar设置
@@ -104,10 +118,12 @@ public class MainActivity extends BaseActivity {
                 }
         );
 
-//        mail.setText(username);
-//        usernameTV.setText(username + "@outlook.com");
+        Log.d(TAG, phone);
+        Log.d(TAG, username);
+        phoneNumberTV.setText(phone);
+        usernameTV.setText(username);
+        iconImage.setImageResource(icons.getResourceId(iconIndex, 0));
         icon.setImageResource(icons.getResourceId(iconIndex, 0));
-//        icon_image.setImageResource(icons.getResourceId(iconIndex, 0));
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +194,7 @@ public class MainActivity extends BaseActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        clientTCPConnector.sendData("SIGNOUT");
+                        clientTCPConnector.sendData("LOGOUT");
                     }
                 }).start();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -203,7 +219,7 @@ public class MainActivity extends BaseActivity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                clientTCPConnector.sendData("SIGNOUT");
+                                clientTCPConnector.sendData("LOGOUT");
                             }
                         }).start();
                         ActivityManager.finishAll();
@@ -293,7 +309,7 @@ public class MainActivity extends BaseActivity {
                         }
                     });
                 }
-                if ("SIGNOUT".equals(parts[0]))
+                if ("LOGOUT".equals(parts[0]))
                     exit = true;
             }
         }
