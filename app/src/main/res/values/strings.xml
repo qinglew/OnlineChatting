@@ -27,4 +27,5 @@
     <string name="phone">手机号:</string>
     <string name="select_icon">选择头像</string>
     <string name="phone_string">手机号:</string>
+    <string name="remember_password">记住密码</string>
 </resources>
