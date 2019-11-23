@@ -6,20 +6,20 @@ This is a application for online chatting based Android. And it is the final exa
 
 **Login**
 
-![Login](./Screenshots/andriod0.png)
+<img width="336" height="609" src="./Screenshots/android0.png" alt="Login"/>
 
 **Register**
 
-![Register](./Screenshots/android3.png)
+<img width="336" height="609" src="./Screenshots/android3.png" alt="Register"/>
 
 **Select A Icon**
 
-![Select A Icon](./Screenshots/android4.png)
+<img width="336" height="609" src="./Screenshots/android4.png" alt="Select A Icon"/>
 
 **Multiple User Chatting**
 
-![Multiple User Chatting](./Screenshots/android1.png)
+<img width="336" height="609" src="./Screenshots/android1.png" alt="Multiple Users Chatting"/>
 
 **Navigation View**
 
-![Navigation View](./Screenshots/android2.png)
+<img width="336" height="609" src="./Screenshots/android2.png" alt="Navigation View"/>
