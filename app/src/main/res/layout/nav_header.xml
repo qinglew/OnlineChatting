@@ -4,21 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:padding="10dp"
+    android:id="@+id/nav_header"
     android:background="@drawable/toolbar">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/icon_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/nav_icon"
         android:layout_centerInParent="true" />
 
     <TextView
-        android:id="@+id/mail"
+        android:id="@+id/phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/user_email"
         android:textColor="#FFF"
         android:textSize="14sp" />
 
@@ -26,8 +25,7 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/username"
-        android:layout_above="@id/mail"
+        android:layout_above="@id/phone_number"
         android:textColor="#FFF"
         android:textSize="14sp" />
 
