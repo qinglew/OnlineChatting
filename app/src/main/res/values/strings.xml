@@ -28,4 +28,15 @@
     <string name="select_icon">选择头像</string>
     <string name="phone_string">手机号:</string>
     <string name="remember_password">记住密码</string>
+    <string name="personal_info">个人信息</string>
+    <string name="icon">头像:</string>
+    <string name="sure_modify">确认修改</string>
+    <string name="modify_password">修改密码</string>
+    <string name="person_intro">个人简介:</string>
+    <string name="username_text2">用户名</string>
+    <string name="modify_intro">修改个人简介</string>
+    <string name="person_introduction">个人简介</string>
+    <string name="modify_username">修改用户名</string>
+    <string name="origin_password">原密码</string>
+    <string name="new_password">新密码</string>
 </resources>

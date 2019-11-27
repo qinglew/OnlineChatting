@@ -2,10 +2,14 @@ package com.example.onlinechatting;
 
 import android.app.Activity;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityManager {
+    private static AppCompatActivity compatActivity;
+
     private static ActivityManager instance = new ActivityManager();
 
     public static List<Activity> activities;
@@ -28,10 +32,32 @@ public class ActivityManager {
         activities.remove(activity);
     }
 
+    /**
+     * 结束所有活动，退出应用
+     */
     public static void finishAll() {
         for (Activity activity : activities)
             if (!activity.isFinishing())
                 activity.finish();
         activities.clear();
+    }
+
+    /**
+     * 回到登陆界面
+     */
+    public static void finishAllExceptLogin() {
+        for (Activity activity : activities) {
+            if (!activity.isFinishing() && activity.getClass() != LoginActivity.class) {
+                activity.finish();
+            }
+        }
+    }
+
+    public static AppCompatActivity getCompatActivity() {
+        return compatActivity;
+    }
+
+    public static void setCompatActivity(AppCompatActivity compatActivity) {
+        ActivityManager.compatActivity = compatActivity;
     }
 }

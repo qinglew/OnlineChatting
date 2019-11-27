@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.onlinechatting.entity.User;
 import com.example.onlinechatting.util.ClientTCPConnector;
 
 public class LoginActivity extends BaseActivity {
@@ -26,7 +27,6 @@ public class LoginActivity extends BaseActivity {
 
     private String phone;
     private String password;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,6 @@ public class LoginActivity extends BaseActivity {
             rememberPassword.setChecked(true);
         }
 
-
-
         /*
          WIFI检查广播
          */
@@ -62,53 +60,46 @@ public class LoginActivity extends BaseActivity {
         Log.d("LoginActivity", "login invoked.");
         phone = phone_et.getText().toString();
         password = password_et.getText().toString();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ClientTCPConnector clientTCPConnector = ClientTCPConnector.getInstance();
-                    clientTCPConnector.connect();
-                    clientTCPConnector.sendData("LOGIN|" + phone + "|" + password);
-                    String info = clientTCPConnector.receiveData();
-                    if (info != null && info.contains("SUCCESS")) {
-                        editor = pref.edit();
-                        if (rememberPassword.isChecked()) {
-                            editor.putBoolean("remember_password", true);
-                            editor.putString("phone", phone);
-                            editor.putString("password", password);
-                        } else {
-                            editor.clear();
-                        }
-                        editor.apply();
-                        String[] parts = info.split("\\|");
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("username", parts[1]);
-                        intent.putExtra("icon_index", Integer.parseInt(parts[2]));
-                        intent.putExtra("phone", phone);
-                        startActivity(intent);
-                    } else if (info != null && info.contains("ERROR")) {
-                        String[] parts = info.split("\\|");
-                        clientTCPConnector.close();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(LoginActivity.this, parts[1], Toast.LENGTH_SHORT).show();
-                            }
-                        });
+        new Thread(() -> {
+            try {
+                ClientTCPConnector clientTCPConnector = ClientTCPConnector.getInstance();
+                clientTCPConnector.connect();
+                clientTCPConnector.sendData("LOGIN|" + phone + "|" + password);
+                String info = clientTCPConnector.receiveData();
+                if (info != null && info.contains("SUCCESS")) {
+                    editor = pref.edit();
+                    if (rememberPassword.isChecked()) {
+                        editor.putBoolean("remember_password", true);
+                        editor.putString("phone", phone);
+                        editor.putString("password", password);
+                    } else {
+                        editor.clear();
                     }
-                } catch (Exception e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(LoginActivity.this, "未知错误!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    editor.apply();
+                    String[] parts = info.split("\\|");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    // 从服务器获取用户所有信息
+                    User user = new User(parts[1], parts[2], parts[3],
+                            Integer.parseInt(parts[4]), parts[5]);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("user", user);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else if (info != null && info.contains("ERROR")) {
+                    String[] parts = info.split("\\|");
+                    clientTCPConnector.close();
+                    runOnUiThread(() -> Toast.makeText(LoginActivity.this, parts[1], Toast.LENGTH_SHORT).show());
                 }
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(LoginActivity.this, "未知错误!", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }
 
+    /**
+     * 注册活动
+     * @param view
+     */
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivityForResult(intent, 1);
