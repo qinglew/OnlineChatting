@@ -4,19 +4,31 @@
 
 This is a application for online chatting based Android. And it is the final exam of the course Android Application Development of NCU in autumn term in 2019-2020. This is only the Android client of the project. As for the server and the PC client, please click [here](https://github.com/qinglew/OnlineChatter).
 
+### Functions
+
+* Register 注册
+* Login 登陆
+* Chatting 多人聊天
+* Modify User's Info 修改用户信息(图片、用户名、密码等)
+* Online Users' List 在线用户列表
+* User's info查看用户信息
+* Manage Message History 按日期管理消息记录
+
+### Technology Stack
+
+* Material Design
+* Glide
+* Litpal
+
 ### Screenshots
-
-**Login**
-
-<img width="336" height="609" src="./Screenshots/android0.png" alt="Login"/>
 
 **Register**
 
-<img width="336" height="609" src="./Screenshots/android3.png" alt="Register"/>
+<img width="336" height="609" src="./Screenshots/register.png" alt="Register"/>
 
-**Select A Icon**
+**Login**
 
-<img width="336" height="609" src="./Screenshots/android4.png" alt="Select A Icon"/>
+<img width="336" height="609" src="./Screenshots/login.png" alt="Login"/>
 
 **Multiple User Chatting**
 
@@ -24,4 +36,12 @@ This is a application for online chatting based Android. And it is the final exa
 
 **Navigation View**
 
-<img width="336" height="609" src="./Screenshots/android2.png" alt="Navigation View"/>
+<img width="336" height="609" src="./Screenshots/navigation.png" alt="Navigation View"/>
+
+**Personal Information**
+
+<img width="336" height="609" src="./Screenshots/person_info.png" alt="Person Information" />
+
+**Message Management**
+
+<img width="336" height="609" src="./Screenshots/message.png" alt="Message Management" />
