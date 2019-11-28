@@ -185,9 +185,8 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.backup:
-                // TODO: Something here to happened
-                Toast.makeText(MainActivity.this,
-                        "You clicked the Backup.", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(this, MessageHistoryActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.delete:
                 delete(findViewById(R.id.fab));

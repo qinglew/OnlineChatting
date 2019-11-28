@@ -40,4 +40,5 @@
     <string name="origin_password">原密码</string>
     <string name="new_password">新密码</string>
     <string name="user_list">用户列表</string>
+    <string name="message_history">消息记录</string>
 </resources>

@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserInfoActivity"></activity>
+        <activity android:name=".MessageHistoryActivity"></activity>
+        <activity android:name=".UserInfoActivity" />
         <activity android:name=".UserListActivity" />
 
         <receiver
