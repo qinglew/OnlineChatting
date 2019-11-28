@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 活动管理器
+ */
 public class ActivityManager {
     private static AppCompatActivity compatActivity;
 
@@ -24,10 +27,18 @@ public class ActivityManager {
         return instance;
     }
 
+    /**
+     * 新增活动
+     * @param activity
+     */
     public static void  addActivity(Activity activity) {
         activities.add(activity);
     }
 
+    /**
+     * 移除活动
+     * @param activity
+     */
     public static void removeActivity(Activity activity) {
         activities.remove(activity);
     }

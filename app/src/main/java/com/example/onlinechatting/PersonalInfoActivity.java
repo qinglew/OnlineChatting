@@ -62,7 +62,11 @@ public class PersonalInfoActivity extends BaseActivity {
         icon.setImageResource(images.getResourceId(user.getImage(), 0));
         usernameEditText.setText(user.getUsername());
         phoneTextView.setText(user.getPhone());
-        infoDesc.setText(user.getDesc());
+        if (user.getDesc() == null) {
+            infoDesc.setText("");
+        } else {
+            infoDesc.setText(user.getDesc());
+        }
 
         // 退出
         quit.setOnClickListener(v -> {
@@ -114,20 +118,17 @@ public class PersonalInfoActivity extends BaseActivity {
                 if (resultCode == RESULT_OK) {
                     String newDesc = data.getStringExtra("desc");
                     user.setDesc(newDesc);
-                    infoDesc.setText(user.getDesc());
+                    if (user.getDesc() == null) {
+                        infoDesc.setText("");
+                    } else {
+                        infoDesc.setText(user.getDesc());
+                    }
                 }
             case 3:
                 if (resultCode == RESULT_OK) {
                     String newPassword = data.getStringExtra("password");
                     user.setPassword(newPassword);
                     Log.d(TAG, "before sending broadcast");
-                    // TODO: 发送广播强制下线重新登陆
-//                    Intent forceOffLine = new Intent("com.example.onlinechatting.FORCE_OFFLINE");
-////                    forceOffLine.setAction("com.example.onlinechatting.FORCE_OFFLINE");
-//                    forceOffLine.setComponent(new ComponentName("com.example.onlinechatting",
-//                            "com.example.onlinechatting.BaseActivity.ForceOfflineReceiver"));
-//                    sendBroadcast(forceOffLine);
-//                    Log.d(TAG, "after sending broadcast");
                     Intent intent1 = new Intent();
                     intent1.setAction("cn.edu.ncu.cleo.FORCE_OFFLINE");
                     intent1.setPackage("com.example.onlinechatting");

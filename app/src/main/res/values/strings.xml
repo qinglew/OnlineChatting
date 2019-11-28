@@ -39,4 +39,5 @@
     <string name="modify_username">修改用户名</string>
     <string name="origin_password">原密码</string>
     <string name="new_password">新密码</string>
+    <string name="user_list">用户列表</string>
 </resources>

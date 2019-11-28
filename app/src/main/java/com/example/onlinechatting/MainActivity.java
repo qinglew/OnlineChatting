@@ -33,6 +33,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.litepal.LitePal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     private List<Message> messageList;
     private MessageAdapter messageAdapter;
-    private TypedArray icons;
+    public static TypedArray icons;
 
     public static User user;
 
@@ -114,16 +115,23 @@ public class MainActivity extends BaseActivity {
          */
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
-                    drawerLayout.closeDrawers();
-                    Toast.makeText(MainActivity.this, "The function is not completed.",
-                            Toast.LENGTH_SHORT).show();
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_friends:
+                            new Thread(() -> {
+                                clientTCPConnector.sendData("LIST");
+                            }).start();
+                    }
                     return true;
                 }
         );
         phoneNumberTV.setText(user.getPhone());
         usernameTV.setText(user.getUsername());
         iconImage.setImageResource(icons.getResourceId(user.getImage(), 0));
-        descriptionTV.setText(user.getDesc());
+        if (user.getDesc() == null) {
+            descriptionTV.setText("");
+        } else {
+            descriptionTV.setText(user.getDesc());
+        }
         icon.setImageResource(icons.getResourceId(user.getImage(), 0));
         icon.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         personInfo.setOnClickListener(v -> {
@@ -282,7 +290,11 @@ public class MainActivity extends BaseActivity {
                     icon.setImageResource(icons.getResourceId(user.getImage(), 0));
                     usernameTV.setText(user.getUsername());
                     usernameTitle.setText(user.getUsername());
-                    descriptionTV.setText(user.getDesc());
+                    if (user.getDesc() == null) {
+                        descriptionTV.setText("");
+                    } else {
+                        descriptionTV.setText(user.getDesc());
+                    }
                 }
                 break;
                 default:
@@ -326,13 +338,16 @@ public class MainActivity extends BaseActivity {
                         recyclerView.scrollToPosition(messageList.size() - 1);
                         messageEdit.setText("");
                     });
+                    continue;
                 }
-                if ("LOGOUT".equals(parts[0]))
+                if ("LOGOUT".equals(parts[0])) {
                     exit = true;
+                }
                 if ("IMAGE_ERROR".equals(parts[0])) {
                     PersonalInfoActivity.info = "ERROR";
                     Log.d(TAG, parts[1]);
                     user.setImage(PersonalInfoActivity.user.getImage());
+                    continue;
                 }
                 if ("IMAGE_SUCCESS".equals(parts[0])) {
                     PersonalInfoActivity.info = "SUCCESS";
@@ -341,6 +356,7 @@ public class MainActivity extends BaseActivity {
                     String phone = parts[1];
                     int image = Integer.parseInt(parts[2]);
                     updateMessage(phone, image);
+                    continue;
                 }
                 if ("USERNAME_SUCCESS".equals(parts[0])) {
                     ModifyUsernameActivity.status = 1;
@@ -348,24 +364,48 @@ public class MainActivity extends BaseActivity {
                     String phone = parts[1];
                     String username = parts[2];
                     updateMessage(phone, username);
+                    continue;
                 }
                 if ("USERNAME_ERROR".equals(parts[0])) {
                     ModifyUsernameActivity.status = 0;
                     ModifyUsernameActivity.info = parts[1];
+                    continue;
                 }
                 if ("DESC_SUCCESS".equals(parts[0])) {
                     ModifyIntroActivity.status = 1;
+                    continue;
                 }
                 if ("DESC_ERROR".equals(parts[0])) {
                     ModifyIntroActivity.status = 0;
                     ModifyIntroActivity.info = parts[1];
+                    continue;
                 }
                 if ("PASSWORD_SUCCESS".equals(parts[0])) {
                     ChangePasswordActivity.status = 1;
+                    continue;
                 }
                 if ("PASSWORD_ERROR".equals(parts[0])) {
                     ChangePasswordActivity.status = 0;
                     ChangePasswordActivity.info = parts[1];
+                    continue;
+                }
+                if ("LIST".equals(parts[0])) {
+                    // TODO: 获取用户列表， 开启用户列表活动
+                    List<User> users = new ArrayList<>();
+                    String[] userStrings = parts[1].split("!");
+                    for (String userString : userStrings) {
+                        String[] attributes = userString.split(",");
+                        User user = new User();
+                        user.setPhone(attributes[0]);
+                        user.setUsername(attributes[1]);
+                        user.setImage(Integer.parseInt(attributes[2]));
+                        user.setDesc(attributes[3]);
+                        users.add(user);
+                    }
+                    Log.d(TAG, Arrays.toString(users.toArray()));
+                    Intent intent1 = new Intent(MainActivity.this, UserListActivity.class);
+                    UserListActivity.userList = users;
+                    startActivity(intent1);
                 }
             }
         }
