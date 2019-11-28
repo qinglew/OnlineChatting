@@ -60,8 +60,11 @@ public class RegisterActivity extends BaseActivity {
         password = passwordEditText.getText().toString();
         AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
         AtomicBoolean passed = new AtomicBoolean(true);
+        if ("".equals(phone)) {
+            Toast.makeText(this, "请填写手机号", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!phone.matches("^[1][3|5|7|8][0-9]{9}$")) {
-
             dialog.setTitle("提示");
             dialog.setMessage("手机号码格式错误!");
             dialog.setCancelable(false);
@@ -71,14 +74,23 @@ public class RegisterActivity extends BaseActivity {
             dialog.show();
             return;
         }
-        if (!username.matches("^\\w[\\w\\d]{5,20}")) {
+        if ("".equals(username)) {
+            Toast.makeText(this, "请填写用户名", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (username.contains(" ") ||
+                (username.length() < 1 || username.length() > 20)) {
             dialog.setTitle("提示");
-            dialog.setMessage("用户名必须为字母开头，整体由5-20位字母数字组合而成!");
+            dialog.setMessage("用户名不能包含空格且长度不超过20个字符!");
             dialog.setCancelable(false);
             dialog.setNegativeButton("确定", (d, w) -> {
                 passed.set(false);
             });
             dialog.show();
+            return;
+        }
+        if ("".equals(password)) {
+            Toast.makeText(this, "请填写密码", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!password.matches("[0-9a-zA-Z]{8,18}")) {

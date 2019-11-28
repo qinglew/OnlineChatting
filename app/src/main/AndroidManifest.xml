@@ -3,20 +3,46 @@
     package="com.example.onlinechatting">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".IconSelectActivity"
-            android:launchMode="singleTask"></activity>
-        <activity android:name=".RegisterActivity"
-            android:launchMode="singleTask"/>
+        <activity android:name=".MessageHistoryActivity"></activity>
+        <activity android:name=".UserInfoActivity" />
+        <activity android:name=".UserListActivity" />
+
+        <receiver
+            android:name=".ForceOfflineReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.edu.ncu.cleo.FORCE_OFFLINE" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ModifyIntroActivity" />
+        <activity android:name=".ModifyUsernameActivity" />
+        <activity
+            android:name=".ModifyIconActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".PersonalInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".IconSelectActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".RegisterActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".LoginActivity"
             android:launchMode="singleTask">

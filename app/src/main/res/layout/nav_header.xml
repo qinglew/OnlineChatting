@@ -10,23 +10,42 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/icon_image"
         android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true" />
+        android:layout_height="70dp" />
 
     <TextView
         android:id="@+id/phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_alignParentBottom="true"
         android:textColor="#FFF"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_marginStart="10dp" />
 
     <TextView
         android:id="@+id/username"
+        android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/phone_number"
         android:textColor="#FFF"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#FFF"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/person_info"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/person_info" />
 
 </RelativeLayout>
