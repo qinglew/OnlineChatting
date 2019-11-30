@@ -62,7 +62,7 @@ public class PersonalInfoActivity extends BaseActivity {
         icon.setImageResource(images.getResourceId(user.getImage(), 0));
         usernameEditText.setText(user.getUsername());
         phoneTextView.setText(user.getPhone());
-        if (user.getDesc() == null) {
+        if (user.getDesc() == null || user.getDesc().equals("null")) {
             infoDesc.setText("");
         } else {
             infoDesc.setText(user.getDesc());
@@ -118,7 +118,7 @@ public class PersonalInfoActivity extends BaseActivity {
                 if (resultCode == RESULT_OK) {
                     String newDesc = data.getStringExtra("desc");
                     user.setDesc(newDesc);
-                    if (user.getDesc() == null) {
+                    if (user.getDesc() == null || user.getDesc().equals("null")) {
                         infoDesc.setText("");
                     } else {
                         infoDesc.setText(user.getDesc());
