@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
         phoneNumberTV.setText(user.getPhone());
         usernameTV.setText(user.getUsername());
         iconImage.setImageResource(icons.getResourceId(user.getImage(), 0));
-        if (user.getDesc() == null) {
+        if (user.getDesc() == null || user.getDesc().equals("null")) {
             descriptionTV.setText("");
         } else {
             descriptionTV.setText(user.getDesc());
@@ -222,17 +222,9 @@ public class MainActivity extends BaseActivity {
     private void exit(View view) {
         Snackbar.make(view, "确定要退出应用吗？",
                 Snackbar.LENGTH_LONG)
-                .setAction("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                clientTCPConnector.sendData("LOGOUT");
-                            }
-                        }).start();
-                        ActivityManager.finishAll();
-                    }
+                .setAction("确定", v -> {
+                    new Thread(() -> clientTCPConnector.sendData("LOGOUT")).start();
+                    ActivityManager.finishAll();
                 }).show();
     }
 
@@ -242,13 +234,10 @@ public class MainActivity extends BaseActivity {
      */
     private void delete(View view) {
         Snackbar.make(view, "确定要清空聊天记录吗？", Snackbar.LENGTH_LONG)
-                .setAction("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        LitePal.deleteAll(Message.class);  // 删除数据库中所有的消息记录
-                        messageList.clear();
-                        messageAdapter.notifyDataSetChanged();
-                    }
+                .setAction("确定", v -> {
+                    LitePal.deleteAll(Message.class);  // 删除数据库中所有的消息记录
+                    messageList.clear();
+                    messageAdapter.notifyDataSetChanged();
                 }).show();
     }
 
@@ -289,7 +278,7 @@ public class MainActivity extends BaseActivity {
                     icon.setImageResource(icons.getResourceId(user.getImage(), 0));
                     usernameTV.setText(user.getUsername());
                     usernameTitle.setText(user.getUsername());
-                    if (user.getDesc() == null) {
+                    if (user.getDesc() == null || user.getDesc().equals("null")) {
                         descriptionTV.setText("");
                     } else {
                         descriptionTV.setText(user.getDesc());

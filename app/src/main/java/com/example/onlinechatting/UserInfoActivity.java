@@ -35,7 +35,7 @@ public class UserInfoActivity extends BaseActivity {
         icon.setImageResource(MainActivity.icons.getResourceId(user.getImage(), 0));
         phone.setText(user.getPhone());
         username.setText(user.getUsername());
-        if (user.getDesc() == null) {
+        if (user.getDesc() == null || user.getDesc().equals("null")) {
             desc.setText("");
         } else {
             desc.setText(user.getDesc());
