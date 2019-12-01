@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientTCPConnector {
+    // Cloud server ip address : 182.92.224.230
     private static ClientTCPConnector instance = new ClientTCPConnector("10.0.2.2", 8888);
 
     private Socket socket;

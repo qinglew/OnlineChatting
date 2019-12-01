@@ -114,6 +114,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     usernameEditText.setText(user.getUsername());
                     Toast.makeText(this, "修改用户名成功!", Toast.LENGTH_SHORT).show();
                 }
+                break;
             case 2:
                 if (resultCode == RESULT_OK) {
                     String newDesc = data.getStringExtra("desc");
@@ -124,6 +125,7 @@ public class PersonalInfoActivity extends BaseActivity {
                         infoDesc.setText(user.getDesc());
                     }
                 }
+                break;
             case 3:
                 if (resultCode == RESULT_OK) {
                     String newPassword = data.getStringExtra("password");
