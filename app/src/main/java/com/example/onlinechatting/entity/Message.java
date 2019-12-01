@@ -2,8 +2,6 @@ package com.example.onlinechatting.entity;
 
 import org.litepal.crud.LitePalSupport;
 
-import java.util.Date;
-
 /**
  * @description 消息
  */
